@@ -1,0 +1,17 @@
+{
+  "name": "home",
+  "version": "1.0.0",
+  "description": "开车回家路况查询",
+  "main": "index.js",
+  "scripts": {
+    "test": "scf native invoke --no-event",
+    "deploy": "scf deploy -f"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.19.1",
+    "mongodb": "^3.5.0",
+    "mongoose": "^5.8.7"
+  }
+}

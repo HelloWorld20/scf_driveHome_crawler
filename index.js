@@ -24,16 +24,29 @@ exports.main_handler = async (event, context, callback) => {
   });
 
   const time = new Date().getTime();
-  let insertValue = result.map(route => {
+  // let insertValue = result.map(route => {
+  //   return {
+  //     duration: route.legs[0].duration,
+  //     time,
+  //     name: route.main_roads
+  //   };
+  // })
+  // insertValue = insertValue.filter(route => route.name.includes('梧柳高速'))
+
+  let insertValue = result.reduce((pre, cur) => {
     return {
-      duration: route.legs[0].duration,
-      time,
-      name: route.main_roads
-    };
-  })
-  insertValue = insertValue.filter(route => route.name.includes('梧柳高速'))
-  // console.log(result);
-  await insertMany(insertValue);
+      duration: pre.duration + cur.legs[0].duration
+    }
+  }, { duration: 0 })
+
+
+  insertValue.duration = parseInt(insertValue.duration / result.length);
+
+  insertValue.time = time;
+  insertValue.name = '广州南 - 宜州'
+
+  console.log([insertValue]);
+  await insertMany([insertValue]);
 
 
   return {
@@ -56,7 +69,7 @@ function insertMany(value) {
 
       db.collection('crawler-home').insertMany(value)
 
-      client.close();
+      // client.close();
       resolve();
     })
   })
